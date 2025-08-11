@@ -1,26 +1,30 @@
 # PROJECT5
 Task 5: Wireshark Packet Capture & amp; Protocol Analysis
-## Objectives
-- Captured live network traffic using Wireshark.
-- Identified key protocols: TCP, DNS, HTTP.
+📌 Overview
+This project contains a professional analysis of captured network traffic using Wireshark.
+The provided report summarizes packet counts, protocol distribution, and data volume statistics for the captured session.
 
-## Steps
-1. Installed Wireshark (Windows).
-2. Captured packets while browsing a website and pinging a server.
-3. Filtered and analyzed packets for common protocols.
+📂 Contents
+network_traffic_report1.txt — Detailed protocol summary table with packet and byte distribution.
 
-## Protocols Found
-- **DNS:** Used for domain lookups.
-- **TCP:** Underlying transport for web and other traffic.
-- **HTTP:** Used for web browsing.
+task5.pcapng — Original packet capture file (Wireshark compatible).
 
-## Sample Packet Details
-- DNS query from [your IP] to 8.8.8.8 (Google DNS).
-- HTTP GET request to [website].
-- TCP handshake between local and remote server.
+🛠 Tools Used
+Wireshark — Packet capture and analysis.
 
-## Files
-- `capture.pcap`: Raw packet capture file.
+pcapng format — For raw network traffic storage.
+
+📊 Key Insights
+Full breakdown of Ethernet, IPv4, IPv6, TCP, UDP, and higher-layer protocols.
+
+Identification of traffic distribution by protocol and data size.
+
+🔍 How to Use
+Open the .pcapng file in Wireshark.
+
+Compare findings with the provided network_traffic_report.txt.
+
+Use this data for network diagnostics, security analysis, or educational purposes
 
 ## References
 - Wireshark official documentation.
