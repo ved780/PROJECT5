@@ -1,0 +1,83 @@
+Network Capture & Wireshark — Interview Question Answers
+-------------------------------------------------------
+Prepared for: Cyber Security Internship Task 5
+Author: [Your Name]
+Date: [Insert Date]
+
+1. What is Wireshark used for?
+--------------------------------
+Wireshark is an open-source network protocol analyzer used to capture, inspect, and analyze network traffic in real time or from saved capture files (PCAP/PCAPNG). It helps network engineers, system administrators, and security professionals troubleshoot network issues, analyze protocol behavior, investigate security incidents, and learn how network protocols operate by decoding packet contents across the protocol stack (Ethernet, IP, TCP/UDP, application protocols, etc.).
+
+2. What is a packet?
+---------------------
+A packet (or network packet) is a formatted unit of data carried by a packet-switched network. It typically contains:
+- A header with control information (e.g., source and destination addresses, protocol identifiers, sequence numbers).
+- A payload containing the actual data being transmitted (e.g., part of an HTTP message, DNS query).
+Packets are the building blocks of network communication — larger messages are split into packets, transmitted across the network, and reassembled at the destination.
+
+3. How to filter packets in Wireshark?
+--------------------------------------
+Wireshark supports two main filtering mechanisms:
+- Capture filters: Applied when you start capturing traffic; they limit what packets are saved (syntax based on libpcap/tcpdump). Example:
+    * `host 192.168.1.5`        — capture packets to/from a host
+    * `port 53`                — capture packets to/from port 53 (DNS)
+    * `tcp and port 80`        — capture TCP packets on port 80
+- Display filters: Applied after capture to show only matching packets from the captured file (Wireshark's rich filter syntax). Example:
+    * `ip.addr == 192.168.1.5`
+    * `tcp.port == 443`
+    * `dns` or `http` or `tcp`
+    * Compound: `http || dns` or `ip.src == 10.0.0.1 && tcp`
+To apply display filters, type the expression into the filter bar and press Enter. Use the **Expression...** button to build filters visually.
+
+4. What is the difference between TCP and UDP?
+----------------------------------------------
+- **TCP (Transmission Control Protocol)**:
+  - Connection-oriented: establishes a connection (three-way handshake) before data transfer.
+  - Reliable: provides acknowledgments, retransmissions, flow control, and ordered delivery.
+  - Use cases: web browsing (HTTP/HTTPS), email (SMTP), file transfer (FTP), SSH.
+- **UDP (User Datagram Protocol)**:
+  - Connectionless: sends independent datagrams without a handshake.
+  - Unreliable but low-overhead: no retransmissions or ordering; minimal latency and overhead.
+  - Use cases: DNS queries, VoIP, video streaming, online gaming, where speed matters more than guaranteed delivery.
+
+5. What is a DNS query packet?
+-------------------------------
+A DNS query packet is a UDP (or sometimes TCP) packet that contains a DNS request message asking a DNS server to resolve a domain name into its corresponding IP address (A/AAAA record), or to retrieve other DNS record types (MX, CNAME, TXT, etc.). Key fields in a DNS query packet include:
+- Transaction ID: matches query and response.
+- Flags: indicate whether recursion is requested, query/response, etc.
+- Questions section: the domain name and record type being requested.
+- Additional/Answer/Authority sections (typically empty in queries).
+In Wireshark, DNS queries are shown with readable domain names and query types (e.g., `Standard query A example.com`).
+
+6. How can packet capture help in troubleshooting?
+--------------------------------------------------
+Packet captures provide a raw, unfiltered view of network traffic and are invaluable for troubleshooting:
+- Identify latency or retransmissions: TCP retransmits or duplicate ACKs point to packet loss or congestion.
+- Diagnose connectivity issues: ARP failures, incorrect routing, or DNS failures become visible.
+- Verify protocol behavior: confirm correct requests/responses (e.g., HTTP status codes, DNS answers).
+- Detect misconfigurations: incorrect IPs, wrong ports, or malformed packets.
+- Investigate security incidents: identify suspicious connections, C2 traffic, or data exfiltration patterns.
+Captures should be time-synced and collected from relevant points in the network for accurate root cause analysis.
+
+7. What is a protocol?
+-----------------------
+A protocol is a defined set of rules and conventions that govern how devices communicate over a network. Protocols specify message formats, timing, sequencing, error handling, and behavior for interactions. Examples include:
+- Link layer: Ethernet, Wi-Fi
+- Network layer: IPv4, IPv6
+- Transport layer: TCP, UDP
+- Application layer: HTTP, DNS, SMTP
+Protocols enable interoperability between different hardware and software by standardizing communication expectations.
+
+8. Can Wireshark decrypt encrypted traffic?
+--------------------------------------------
+Wireshark can decrypt some encrypted traffic **only if** you provide the necessary secrets or keys, or if the encryption uses methods that allow passive decryption:
+- **TLS (SSL/TLS)**:
+  - **Pre-master secrets / session keys**: If the client exports TLS session keys (e.g., through `SSLKEYLOGFILE` in browsers like Firefox/Chrome) and you load them into Wireshark, Wireshark can decrypt TLS sessions (including TLS 1.2 and earlier with proper keys).
+  - **Server private key**: If the server uses RSA key exchange (non-ephemeral) and you possess the server's private key, Wireshark can decrypt sessions. However, modern servers use ephemeral Diffie–Hellman (DHE/ECDHE) which prevents decryption using the server private key alone.
+  - **Limitations**: TLS 1.3 and ephemeral key exchanges protect forward secrecy; without session keys exported by the client, passive decryption is not possible.
+- **Other encrypted protocols**: Decryption may be possible if Wireshark supports the protocol and you can supply keys or credentials (e.g., IPsec with appropriate keys).
+- **Legal & ethical considerations**: Always ensure you have authorization to capture and decrypt traffic; decrypting traffic without consent may be illegal or unethical.
+In short — Wireshark can decrypt when you have key material (session keys or appropriate private keys) and the encryption mode permits it; otherwise encrypted payloads remain unreadable.
+
+---
+End of file.
