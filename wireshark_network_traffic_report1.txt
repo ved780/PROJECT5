@@ -1,7 +1,7 @@
 Network Traffic Analysis Report
 ================================
 
-Date of Capture : [Insert Date Here]
+Date of Capture : [12/08/2025]
 Captured Using  : Wireshark
 Analyst         : Ved Vyas
 
